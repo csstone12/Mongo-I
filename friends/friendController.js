@@ -1,11 +1,11 @@
 const router = require('express').Router();
 
-const friend = require('./friendModel');
+const Friend = require('./friendModel');
 
 router
   .route('/')
   .get((req, res) => {
-    friend.find({})
+    Friend.find({})
       .then(friends => {
         res.status(200).json(friends);
       })
@@ -15,15 +15,14 @@ router
   })
   .post((req, res) => {
     const { firstName, lastName, age} = req.body
-    console.log(friend)
-    if(!friend.firstName || !friend.lastName || !friend.age){
+    if(!firstName || !lastName || !age){
         res.status(400).json({err: 'Please provide firstName, lastName and age for the friend'})
     }
-    if(!Number.isInteger(friend.age) || friend.age < 1 || friend.age>120){
+    if(!Number.isInteger(age) || age < 1 || age>120){
         res.status(400).json({err: 'Age must be a number between 1 and 120'})
     }
 
-    const friend = new friend ({ firstName, lastName, age});
+    const friend = new Friend ({ firstName, lastName, age});
     friend
       .save()
       .then(savedFriend => {
